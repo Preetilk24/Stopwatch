@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StopWatc</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>* {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        background-size: cover;
+        background-position: center;
+        background-image: linear-gradient(357deg, #d190f6ad 0%, #71c4ff7a ,#0c96f995 100%);
+        background-repeat: no-repeat; 
+        font-family: Arial, sans-serif;
+        height: 100vh; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+    }
+    
+    .timebtn {
+        height: 40px;
+        width: 60px;
+        border: 3px solid rgb(61, 5, 52);
+        border-radius: 12px;
+        background-color: rgba(189, 27, 230, 0.252);
+        color: rgb(20, 1, 13);
+        cursor: pointer;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    
+    .timebtn:hover {
+        background-color: rgba(172, 56, 218, 0.503);
+        transform: scale(1.05);
+    }
+    
+    #timeDisplay {
+        font-size: 75px;
+        color: rgb(15, 3, 3);
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    
+    #timeContainer {
+        width: 400px;
+        text-align: center;
+        border: 3px solid rgb(61, 5, 52);
+        border-radius: 300px;
+        background-color: #f6f4f58a;
+        padding: 20px;
+    }
+    </style>
+    <div id="timeContainer">
+        <div id="timeDisplay">00:00:00</div>
+        <button id="start" class="timebtn" >Start</button>
+        <button id="pause" class="timebtn">Pause</button>
+        <button id="reset" class="timebtn">Reset</button>
+    </div>
+    <script>const time=document.querySelector('#time');
+        const start=document.querySelector('#start');
+        const pause=document.querySelector('#pause');
+        const reset=document.querySelector('#reset');
+        let startTime=0;
+        let elapsedTime=0;
+        let currentTime=0;
+        let paused=true;
+        let hrs=0;
+        let mins=0;
+        let secs=0;
+        start.addEventListener("click",()=>{
+            if(paused){
+                paused=false;
+                startTime=Date.now()-elapsedTime;
+                intervalId=setInterval(updateTime,75);
+            }
+        });
+        pause.addEventListener("click",()=>{
+            if(!paused){
+                paused=true;
+                elapsedTime=Date.now()-startTime;
+                clearInterval(intervalId);
+            }
+            
+        });
+        reset.addEventListener("click",()=>{
+            paused=true;
+            clearInterval(intervalId);
+            startTime=0;
+             elapsedTime=0;
+             currentTime=0;
+             paused=true;
+             hrs=0;
+             mins=0;
+             secs=0;
+             timeDisplay.textContent="00:00:00";
+        });
+        function updateTime(){
+        elapsedTime=Date.now()-startTime;
+        secs=Math.floor((elapsedTime/1000)%60);
+        mins=Math.floor((elapsedTime/(1000*60))%60);
+        hrs=Math.floor((elapsedTime/(1000*60*60))%60);
+        
+        secs=pad(secs);
+        mins=pad(mins);
+        hrs=pad(hrs);
+        
+        timeDisplay.textContent=`${hrs}:${mins}:${secs}`;
+        
+        function pad(unit){
+            return (("0")+unit).length > 2 ? unit : "0" + unit;
+        }
+        }</script>
+</body>
+</html>
